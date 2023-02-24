@@ -1,9 +1,23 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class DetaildView extends StatelessWidget {
-  const DetaildView({super.key});
+  final String name;
+  final String age;
+  final String phone;
+  final String email;
+  File? image;
+
+  DetaildView(
+      {super.key,
+      required this.name,
+      required this.age,
+      required this.phone,
+      required this.email,
+      required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +28,30 @@ class DetaildView extends StatelessWidget {
             SizedBox(
               height: 100,
             ),
-            CircleAvatar(radius: 60),
+            CircleAvatar(
+              radius: 60,
+              child: ClipOval(
+                child: SizedBox.fromSize(
+                  size: Size.fromRadius(60),
+                  child: (image != null)
+                      ? Image.file(
+                          image!,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset('assets/images/user.png'),
+                ),
+              ),
+            ),
             SizedBox(
               height: 10,
             ),
             Text(
-              "Vineeth",
+              name,
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
             ),
-            ShowAsRow(title: 'Age', value: '24'),
-            ShowAsRow(title: 'Phone', value: '8182838485'),
-            ShowAsRow(title: 'e-mail', value: 'vinee.kcl@gmail.com')
+            ShowAsRow(title: 'Age', value: age),
+            ShowAsRow(title: 'Phone', value: phone),
+            ShowAsRow(title: 'e-mail', value: email)
           ],
         ),
       ),

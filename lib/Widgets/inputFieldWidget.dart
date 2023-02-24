@@ -20,6 +20,12 @@ class InputFieldWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: TextFormField(
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter $label';
+          }
+          return null;
+        },
         obscureText: isPassword,
         keyboardType: type,
         controller: inputController,
