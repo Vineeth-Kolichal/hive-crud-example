@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:student_records/Database/functions/db_functions.dart';
+import 'package:student_records/database/Models/studentModel.dart';
+import 'package:student_records/database/functions/db_functions.dart';
 import 'package:student_records/Widgets/inputFieldWidget.dart';
 
 class InputPage extends StatefulWidget {
@@ -48,6 +49,7 @@ class _InputPageState extends State<InputPage> {
     setOnUpdate();
   }
   final formkey = GlobalKey<FormState>();
+  Image _img = Image.asset('assets/images/user.png');
 
   File? _image;
   Future<void> pickImage() async {
@@ -63,7 +65,7 @@ class _InputPageState extends State<InputPage> {
   }
 
   void clearPage() {
-    _nameController.text = '';
+    _nameController.text = 'hai';
     _ageController.text = '';
     _emailEditingController.text = '';
     _phoneEditingController.text = '';
@@ -84,6 +86,9 @@ class _InputPageState extends State<InputPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Enter student details'),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(10),
@@ -91,43 +96,30 @@ class _InputPageState extends State<InputPage> {
             padding: const EdgeInsets.all(8.0),
             child: Form(
               key: formkey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: ListView(
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 62,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 60,
-                          child: ClipOval(
-                            child: SizedBox.fromSize(
-                              size: Size.fromRadius(60),
-                              child: (_image != null)
-                                  ? Image.file(
-                                      _image! ,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.asset('assets/images/user.png'),
-                            ),
+                  GestureDetector(
+                    onTap: () => pickImage(),
+                    child: CircleAvatar(
+                      radius: 62,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 60,
+                        child: ClipOval(
+                          child: SizedBox.fromSize(
+                            size: Size.fromRadius(60),
+                            child: (_image != null)
+                                ? Image.file(
+                                    _image!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.asset('assets/images/user.png'),
                           ),
                         ),
-                        backgroundColor: Colors.black54,
                       ),
-                      Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.black45,
-                            child: IconButton(
-                              onPressed: () {
-                                pickImage();
-                              },
-                              icon: Icon(Icons.add_a_photo),
-                            ),
-                          )),
-                    ],
+                      backgroundColor: Colors.black54,
+                    ),
                   ),
                   SizedBox(
                     height: 15,
@@ -160,15 +152,20 @@ class _InputPageState extends State<InputPage> {
                                 if (formkey.currentState!.validate()) {
                                   formkey.currentState!.save();
                                   print(_nameController.text);
-                                  addStudent(
-                                      sname: _nameController.text,
-                                      sage: _ageController.text,
-                                      sphone: _phoneEditingController.text,
-                                      semail: _emailEditingController.text,
-                                      simgPro: _image?.path ?? '');
+                                  StudentModel student = StudentModel(
+                                      age: _ageController.text,
+                                      name: _nameController.text,
+                                      phone: _phoneEditingController.text,
+                                      mail: _emailEditingController.text,
+                                      id: DateTime.now()
+                                          .millisecondsSinceEpoch
+                                          .toString(),
+                                      imgPath: _image?.path ?? 'no-img');
+                                  addStudent(student);
+
                                   Navigator.of(context).pop();
                                   getAllData();
-                                  clearPage();
+                                  // clearPage();
                                 }
                               },
                               child: Text('Save Details')),

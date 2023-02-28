@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:student_records/Database/Models/studentModel.dart';
-import 'package:student_records/Database/functions/db_functions.dart';
+import 'package:student_records/database/Models/studentModel.dart';
+import 'package:student_records/database/functions/db_functions.dart';
 import 'package:student_records/Screens/StudentDetials/detailed_view.dart';
 import 'package:student_records/Screens/HomeScreen/inputPage.dart';
 import 'package:student_records/Widgets/customSearchDelegate.dart';
@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (ctx, index) {
                         StudentModel stu = stude[index];
                         File? _image;
-                        if (stu.imgPath != null) {
+                        if (stu.imgPath != 'no-img') {
                           _image = File(stu.imgPath!);
                         }
                         return Card(
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                             title: Text(stu.name),
                             leading: CircleAvatar(
-                              backgroundColor: Colors.black54,
+                              backgroundColor: Colors.black12,
                               child: ClipOval(
                                 child: SizedBox.fromSize(
                                   size: Size.fromRadius(20),
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   IconButton(
                                     onPressed: () {
-                                      updateStudent(stude[index], context);
+                                      bottomSheet(context, stu);
                                     },
                                     icon: Icon(
                                       Icons.edit,
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      deleteStudent(stude[index]);
+                                      deleteAlert(context, stude[index]);
                                     },
                                     icon: Icon(
                                       Icons.delete,
@@ -109,29 +109,60 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Icon(Icons.add),
       ),
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              showSearch(context: context, delegate: CustomSearchDelegate());
-            },
-            icon: Icon(
-              Icons.search,
-            ),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () async {
+        //       showSearch(
+        //           context: context,
+        //           delegate:
+        //               CustomSearchDelegate(studentList: await getAllData()));
+        //     },
+        //     icon: Icon(
+        //       Icons.search,
+        //     ),
+        //   ),
+        // ],
         title: Text('Student List'),
       ),
     );
   }
 }
 
-// Future<dynamic> bottomSheet(BuildContext context) async {
-//   return await showModalBottomSheet(
-//       context: context,
-//       builder: ((BuildContext ctx) {
-//         return SizedBox(
-//           child: InputBottonSheet(),
-//           height: 620,
-//         );
-//       }));
-// }
+Future<dynamic> bottomSheet(BuildContext context, StudentModel student) async {
+  return await showModalBottomSheet(
+      context: context,
+      builder: ((BuildContext ctx) {
+        return SizedBox(
+          child: InputBottonSheet(
+            student: student,
+          ),
+          height: 620,
+        );
+      }));
+}
+
+Future<void> deleteAlert(BuildContext context, StudentModel student) async {
+  showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: const Text('Are you sure?'),
+          content:
+              const Text('If you want to delete click "Yes" or click "No"'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  deleteStudent(student);
+                  Navigator.of(ctx).pop();
+                },
+                child: Text('Yes')),
+            TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+              child: Text('No'),
+            ),
+          ],
+        );
+      });
+}
