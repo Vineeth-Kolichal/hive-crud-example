@@ -6,6 +6,7 @@ import 'package:student_records/database/Models/studentModel.dart';
 import 'package:student_records/Screens/HomeScreen/inputPage.dart';
 
 ValueNotifier<List<StudentModel>> studentNotifier = ValueNotifier([]);
+List<StudentModel> studenList = [];
 Future<void> addStudent(StudentModel student) async {
   final stuDB = await Hive.openBox<StudentModel>('student_db');
   await stuDB.put(student.id, student);
@@ -16,6 +17,7 @@ Future<void> getAllData() async {
   final stuDB = await Hive.openBox<StudentModel>('student_db');
   studentNotifier.value.clear();
   studentNotifier.value.addAll(stuDB.values);
+  studenList.addAll(stuDB.values);
   studentNotifier.notifyListeners();
 }
 
@@ -46,3 +48,35 @@ Future<void> updateStudent(StudentModel studentM) async {
   await stuDB.put(studentM.id, student!);
   getAllData();
 }
+
+Future<List<StudentModel>> getSearch() async {
+  final stuDB = await Hive.openBox<StudentModel>('student_db');
+  List<StudentModel> studentList = [];
+  studentList.addAll(stuDB.values);
+  return studentList;
+}
+
+// Future<void> search(String name) async {
+//   modelListToMap();
+//   if (name.isEmpty) {
+//     mapStu.value = s;
+//   } else {
+//     mapStu.value = s.where((s) => false);
+//   }
+// }
+
+// Future<void> modelListToMap() async {
+//   final stuDB = await Hive.openBox<StudentModel>('student_db');
+//   List<StudentModel> student = stuDB.values.toList();
+
+//   for (var i in student) {
+//     s.add({
+//       'name': i.name,
+//       'age': i.age,
+//       'email': i.mail,
+//       'phone': i.phone,
+//       'id': i.id,
+//       'img': i.imgPath
+//     });
+//   }
+// }
