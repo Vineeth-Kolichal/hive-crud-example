@@ -1,14 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:student_records/database/Models/studentModel.dart';
+import 'package:student_records/database/models/studentModel.dart';
 import 'package:student_records/database/functions/db_functions.dart';
-import 'package:student_records/Widgets/inputFieldWidget.dart';
+import 'package:student_records/Widgets/input_field_widget.dart';
 
+// ignore: must_be_immutable
 class InputPage extends StatefulWidget {
   String? name;
   String? age;
@@ -49,19 +47,17 @@ class _InputPageState extends State<InputPage> {
     setOnUpdate();
   }
   final formkey = GlobalKey<FormState>();
-  Image _img = Image.asset('assets/images/user.png');
 
   File? _image;
   Future<void> pickImage() async {
-    try {
-      final imagePicked =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (imagePicked != null) {
-        setState(() {
-          _image = File(imagePicked.path);
-        });
-      }
-    } on PlatformException catch (e) {}
+    final imagePicked =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (imagePicked != null) {
+      setState(() {
+        _image = File(imagePicked.path);
+        //print(imagePicked.path);
+      });
+    }
   }
 
   void clearPage() {
@@ -80,35 +76,34 @@ class _InputPageState extends State<InputPage> {
     _ageController.text = age!;
     _phoneEditingController.text = phone!;
     _emailEditingController.text = mail!;
-    print(_nameController.text);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Enter student details'),
+        title: const Text('Enter student details'),
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Form(
               key: formkey,
               child: ListView(
-                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
                     onTap: () => pickImage(),
                     child: CircleAvatar(
                       radius: 62,
+                      backgroundColor: Colors.black54,
                       child: CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 60,
                         child: ClipOval(
                           child: SizedBox.fromSize(
-                            size: Size.fromRadius(60),
+                            size: const Size.fromRadius(60),
                             child: (_image != null)
                                 ? Image.file(
                                     _image!,
@@ -118,10 +113,9 @@ class _InputPageState extends State<InputPage> {
                           ),
                         ),
                       ),
-                      backgroundColor: Colors.black54,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   InputFieldWidget(
@@ -140,38 +134,35 @@ class _InputPageState extends State<InputPage> {
                       inputController: _emailEditingController,
                       label: 'e-mail',
                       type: TextInputType.emailAddress),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                              style: ButtonStyle(),
-                              onPressed: () {
-                                if (formkey.currentState!.validate()) {
-                                  formkey.currentState!.save();
-                                  print(_nameController.text);
-                                  StudentModel student = StudentModel(
-                                      age: _ageController.text,
-                                      name: _nameController.text,
-                                      phone: _phoneEditingController.text,
-                                      mail: _emailEditingController.text,
-                                      id: DateTime.now()
-                                          .millisecondsSinceEpoch
-                                          .toString(),
-                                      imgPath: _image?.path ?? 'no-img');
-                                  addStudent(student);
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                            style: const ButtonStyle(),
+                            onPressed: () {
+                              if (formkey.currentState!.validate()) {
+                                formkey.currentState!.save();
+                                StudentModel student = StudentModel(
+                                    age: _ageController.text,
+                                    name: _nameController.text,
+                                    phone: _phoneEditingController.text,
+                                    mail: _emailEditingController.text,
+                                    id: DateTime.now()
+                                        .millisecondsSinceEpoch
+                                        .toString(),
+                                    imgPath: _image?.path ?? 'no-img');
+                                addStudent(student);
 
-                                  Navigator.of(context).pop();
-                                  getAllData();
-                                  // clearPage();
-                                }
-                              },
-                              child: Text('Save Details')),
-                        ),
-                      ],
-                    ),
+                                Navigator.of(context).pop();
+                                getAllData();
+                                // clearPage();
+                              }
+                            },
+                            child: const Text('Save Details')),
+                      ),
+                    ],
                   )
                 ],
               ),

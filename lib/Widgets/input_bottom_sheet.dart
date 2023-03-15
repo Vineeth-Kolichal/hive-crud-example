@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:student_records/Widgets/inputFieldWidget.dart';
-import 'package:student_records/database/Models/studentModel.dart';
+import 'package:student_records/Widgets/input_field_widget.dart';
+import 'package:student_records/database/models/studentModel.dart';
 import 'package:student_records/database/functions/db_functions.dart';
 
 class InputBottonSheet extends StatefulWidget {
@@ -14,6 +12,7 @@ class InputBottonSheet extends StatefulWidget {
 
   @override
   State<InputBottonSheet> createState() =>
+      // ignore: no_logic_in_create_state
       _InputBottonSheetState(student: student);
 }
 
@@ -47,7 +46,6 @@ class _InputBottonSheetState extends State<InputBottonSheet> {
     _ageController.text = student.age;
     _phoneEditingController.text = student.phone;
     _emailEditingController.text = student.mail;
-    // TODO: implement initState
     super.initState();
   }
 
@@ -57,7 +55,7 @@ class _InputBottonSheetState extends State<InputBottonSheet> {
       padding: const EdgeInsets.all(8.0),
       child: Column(children: [
         const SizedBox(
-          height: 10,
+          height: 6,
         ),
         InputFieldWidget(
           inputController: _nameController,
@@ -65,7 +63,7 @@ class _InputBottonSheetState extends State<InputBottonSheet> {
           type: TextInputType.name,
         ),
         const SizedBox(
-          height: 10,
+          height: 6,
         ),
         InputFieldWidget(
           inputController: _ageController,
@@ -73,7 +71,7 @@ class _InputBottonSheetState extends State<InputBottonSheet> {
           type: TextInputType.number,
         ),
         const SizedBox(
-          height: 10,
+          height: 6,
         ),
         InputFieldWidget(
           inputController: _phoneEditingController,
@@ -81,7 +79,7 @@ class _InputBottonSheetState extends State<InputBottonSheet> {
           type: TextInputType.phone,
         ),
         const SizedBox(
-          height: 10,
+          height: 6,
         ),
         InputFieldWidget(
           inputController: _emailEditingController,
@@ -89,7 +87,7 @@ class _InputBottonSheetState extends State<InputBottonSheet> {
           type: TextInputType.emailAddress,
         ),
         const SizedBox(
-          height: 10,
+          height: 6,
         ),
         Row(
           children: [
@@ -105,14 +103,26 @@ class _InputBottonSheetState extends State<InputBottonSheet> {
                   ),
                   const Text('Change Photo'),
                   Visibility(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Icon(
-                        color: Colors.green,
-                        Icons.check,
+                    visible: isImg,
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.black54,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 18,
+                        child: ClipOval(
+                          child: SizedBox.fromSize(
+                            size: const Size.fromRadius(60),
+                            child: (_image != null)
+                                ? Image.file(
+                                    _image!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.asset('assets/images/user.png'),
+                          ),
+                        ),
                       ),
                     ),
-                    visible: isImg,
                   )
                 ],
               ),
@@ -126,7 +136,6 @@ class _InputBottonSheetState extends State<InputBottonSheet> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                    style: ButtonStyle(),
                     onPressed: () {
                       StudentModel stu = StudentModel(
                           imgPath: _image?.path ?? student.imgPath,
@@ -135,12 +144,11 @@ class _InputBottonSheetState extends State<InputBottonSheet> {
                           name: _nameController.text,
                           mail: _emailEditingController.text,
                           phone: _phoneEditingController.text);
-                      print(_nameController.text);
                       updateStudent(stu);
 
                       Navigator.of(context).pop();
                     },
-                    child: Text('Update Details')),
+                    child: const Text('Update Details')),
               ),
             ],
           ),

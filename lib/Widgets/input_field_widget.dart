@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
+// ignore: must_be_immutable
 class InputFieldWidget extends StatelessWidget {
   TextEditingController inputController;
   String label;
   TextInputType type;
   bool isPassword = false;
   InputFieldWidget(
-      {required this.inputController,
+      {super.key,
+      required this.inputController,
       required this.label,
       required this.type,
       bool? isPass}) {
-    this.isPassword = isPass ?? false;
+    isPassword = isPass ?? false;
   }
 
   @override

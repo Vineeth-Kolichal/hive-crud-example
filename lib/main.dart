@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:student_records/database/Models/studentModel.dart';
-import 'package:student_records/Screens/HomeScreen/homeScreen.dart';
+import 'package:student_records/database/models/studentModel.dart';
+import 'package:student_records/Screens/homeScreen/home_screen.dart';
 
-const Save_key_name = 'logged_in';
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   if (!Hive.isAdapterRegistered(StudentModelAdapter().typeId)) {
     Hive.registerAdapter(StudentModelAdapter());
   }
-  runApp(StudentRecord());
+  runApp(const StudentRecord());
 }
 
 class StudentRecord extends StatelessWidget {
@@ -21,8 +18,9 @@ class StudentRecord extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.teal),
-      home: HomeScreen(),
+      home:const HomeScreen(),
     );
   }
 }

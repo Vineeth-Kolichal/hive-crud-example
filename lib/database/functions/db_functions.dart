@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:student_records/database/Models/studentModel.dart';
-import 'package:student_records/Screens/HomeScreen/inputPage.dart';
+import 'package:student_records/database/models/studentModel.dart';
+import 'package:student_records/Screens/homeScreen/input_page.dart';
 
 ValueNotifier<List<StudentModel>> studentNotifier = ValueNotifier([]);
 List<StudentModel> studenList = [];

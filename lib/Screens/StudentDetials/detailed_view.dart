@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class DetaildView extends StatelessWidget {
   final String name;
@@ -25,14 +23,14 @@ class DetaildView extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 100,
             ),
             CircleAvatar(
               radius: 60,
               child: ClipOval(
                 child: SizedBox.fromSize(
-                  size: Size.fromRadius(60),
+                  size: const Size.fromRadius(60),
                   child: (image != null)
                       ? Image.file(
                           image!,
@@ -42,12 +40,12 @@ class DetaildView extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+           const  SizedBox(
               height: 10,
             ),
             Text(
               name,
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
             ),
             ShowAsRow(title: 'Age', value: age),
             ShowAsRow(title: 'Phone', value: phone),
@@ -73,15 +71,15 @@ class ShowAsRow extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
           ),
-          Text(
+          const Text(
             ' : ',
             style: TextStyle(fontSize: 17),
           ),
           Text(
             value,
-            style: TextStyle(fontSize: 17, fontStyle: FontStyle.italic),
+            style: const TextStyle(fontSize: 17, fontStyle: FontStyle.italic),
           ),
         ],
       ),
