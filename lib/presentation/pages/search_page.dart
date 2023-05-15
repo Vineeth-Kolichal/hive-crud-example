@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:student_records/Screens/homeScreen/home_screen.dart';
-import 'package:student_records/database/models/studentModel.dart';
+import 'package:student_records/domain/studentModel.dart';
+import 'package:student_records/presentation/homeScreen/home_screen.dart';
 
 import '../StudentDetials/detailed_view.dart';
 

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:student_records/Widgets/input_field_widget.dart';
-import 'package:student_records/database/models/studentModel.dart';
-import 'package:student_records/database/functions/db_functions.dart';
+import 'package:student_records/domain/studentModel.dart';
+import 'package:student_records/infrastructure/db_functions.dart';
 
 class InputBottonSheet extends StatefulWidget {
   StudentModel student;

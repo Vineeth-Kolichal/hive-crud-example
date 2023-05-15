@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:student_records/Screens/pages/search_page.dart';
-import 'package:student_records/database/models/studentModel.dart';
-import 'package:student_records/database/functions/db_functions.dart';
-import 'package:student_records/Screens/StudentDetials/detailed_view.dart';
-import 'package:student_records/Screens/homeScreen/input_page.dart';
+import 'package:student_records/domain/studentModel.dart';
+import 'package:student_records/infrastructure/db_functions.dart';
+import 'package:student_records/presentation/pages/search_page.dart';
+import 'package:student_records/presentation/StudentDetials/detailed_view.dart';
+import 'package:student_records/presentation/homeScreen/input_page.dart';
 import 'package:student_records/Widgets/input_bottom_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
