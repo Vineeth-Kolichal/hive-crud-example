@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:student_records/Widgets/input_field_widget.dart';
 import 'package:student_records/domain/studentModel.dart';
@@ -155,7 +157,7 @@ class _InputPageState extends State<InputPage> {
                                     imgPath: _image?.path ?? 'no-img');
                                 addStudent(student);
 
-                                Navigator.of(context).pop();
+                                Get.back();
                                 getAllData();
                                 // clearPage();
                               }

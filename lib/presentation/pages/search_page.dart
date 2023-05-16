@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:student_records/domain/studentModel.dart';
 import 'package:student_records/presentation/homeScreen/home_screen.dart';
@@ -37,7 +39,7 @@ class _SearchPageState extends State<SearchPage> {
                     prefixIcon: IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Get.back();
                       },
                     ),
                     suffixIcon: IconButton(
@@ -69,13 +71,13 @@ class _SearchPageState extends State<SearchPage> {
                               borderRadius: BorderRadius.circular(30)),
                           child: ListTile(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (ctx) => DetaildView(
+                              Get.to(DetaildView(
                                       name: stu.name,
                                       age: stu.age,
                                       phone: stu.phone,
                                       email: stu.mail,
-                                      image: image)));
+                                      image: image));
+                             
                             },
                             title: Text(stu.name),
                             leading: CircleAvatar(

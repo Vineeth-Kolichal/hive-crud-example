@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/routes/default_transitions.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:student_records/domain/studentModel.dart';
 import 'package:student_records/infrastructure/db_functions.dart';
 import 'package:student_records/presentation/pages/search_page.dart';
@@ -49,14 +52,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.circular(30)),
                                   child: ListTile(
                                     onTap: () {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (ctx) => DetaildView(
-                                                  name: stu.name,
-                                                  age: stu.age,
-                                                  phone: stu.phone,
-                                                  email: stu.mail,
-                                                  image: image)));
+                                      Get.to(
+                                        DetaildView(
+                                            name: stu.name,
+                                            age: stu.age,
+                                            phone: stu.phone,
+                                            email: stu.mail,
+                                            image: image),
+                                      );
                                     },
                                     title: Text(stu.name),
                                     leading: CircleAvatar(
@@ -119,9 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => InputPage(),
-          ));
+          Get.to(InputPage());
         },
         child: const Icon(Icons.add),
       ),
@@ -129,11 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () async {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) {
-                  return const SearchPage();
-                },
-              ));
+              Get.to(const SearchPage(), transition: Transition.cupertino);
             },
             icon: const Icon(
               Icons.search,
@@ -171,12 +168,12 @@ Future<void> deleteAlert(BuildContext context, StudentModel student) async {
             TextButton(
                 onPressed: () {
                   deleteStudent(student);
-                  Navigator.of(ctx).pop();
+                  Get.back();
                 },
                 child: const Text('Yes')),
             TextButton(
               onPressed: () {
-                Navigator.of(ctx).pop();
+                Get.back();
               },
               child: const Text('No'),
             ),

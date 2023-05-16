@@ -1,9 +1,7 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:student_records/domain/studentModel.dart';
-import 'package:student_records/presentation/homeScreen/input_page.dart';
 
 ValueNotifier<List<StudentModel>> studentNotifier = ValueNotifier([]);
 List<StudentModel> studenList = [];
@@ -56,27 +54,3 @@ Future<List<StudentModel>> getSearch() async {
   return studentList;
 }
 
-// Future<void> search(String name) async {
-//   modelListToMap();
-//   if (name.isEmpty) {
-//     mapStu.value = s;
-//   } else {
-//     mapStu.value = s.where((s) => false);
-//   }
-// }
-
-// Future<void> modelListToMap() async {
-//   final stuDB = await Hive.openBox<StudentModel>('student_db');
-//   List<StudentModel> student = stuDB.values.toList();
-
-//   for (var i in student) {
-//     s.add({
-//       'name': i.name,
-//       'age': i.age,
-//       'email': i.mail,
-//       'phone': i.phone,
-//       'id': i.id,
-//       'img': i.imgPath
-//     });
-//   }
-// }
