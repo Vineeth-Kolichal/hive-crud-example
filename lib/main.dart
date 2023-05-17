@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:student_records/domain/studentModel.dart';
-import 'package:student_records/presentation/homeScreen/home_screen.dart';
+import 'package:student_records/domain/home_screen/models/student_model.dart';
+import 'package:student_records/presentation/home_screen/home_screen.dart';
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +21,7 @@ class StudentRecord extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.teal),
-      home:const HomeScreen(),
+      home: HomeScreen(),
     );
   }
 }

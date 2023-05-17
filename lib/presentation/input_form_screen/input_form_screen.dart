@@ -1,69 +1,32 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:student_records/Widgets/input_field_widget.dart';
-import 'package:student_records/domain/studentModel.dart';
-import 'package:student_records/infrastructure/db_functions.dart';
+import 'package:student_records/application/home_screen/home_screen_controller.dart';
+import 'package:student_records/application/input_form_screen/input_form_screen_controllers.dart';
+import 'package:student_records/domain/home_screen/models/student_model.dart';import 'package:student_records/presentation/home_screen/home_screen.dart';
 
-// ignore: must_be_immutable
-class InputPage extends StatefulWidget {
-  String? name;
-  String? age;
-  String? phone;
-  String? email;
-  String? imgPath;
-  InputPage.update({
-    super.key,
-    this.name,
-    this.age,
-    this.email,
-    this.imgPath,
-    this.phone,
-  }) {
-    _InputPageState.update(
-      name: name,
-      age: age,
-      phone: phone,
-      mail: email,
-      imgPath: imgPath,
-    );
-  }
+InputFormScreenController inputScreenController =
+    Get.put(InputFormScreenController());
+
+class InputPage extends StatelessWidget {
   InputPage({super.key});
 
-  @override
-  State<InputPage> createState() => _InputPageState();
-}
-
-class _InputPageState extends State<InputPage> {
-  _InputPageState();
-  String? name;
-  String? age;
-  String? phone;
-  String? mail;
-  String? imgPath;
-  _InputPageState.update(
-      {this.name, this.age, this.phone, this.mail, this.imgPath}) {
-    setOnUpdate();
-  }
   final formkey = GlobalKey<FormState>();
 
-  File? _image;
   Future<void> pickImage() async {
     final imagePicked =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (imagePicked != null) {
-      setState(() {
-        _image = File(imagePicked.path);
-        //print(imagePicked.path);
-      });
+      inputScreenController.setPickedImage(imagePicked.path, true);
     }
   }
 
   void clearPage() {
-    _nameController.text = 'hai';
+    _nameController.text = '';
     _ageController.text = '';
     _emailEditingController.text = '';
     _phoneEditingController.text = '';
@@ -73,15 +36,11 @@ class _InputPageState extends State<InputPage> {
   final _ageController = TextEditingController();
   final _phoneEditingController = TextEditingController();
   final _emailEditingController = TextEditingController();
-  void setOnUpdate() {
-    _nameController.text = name!;
-    _ageController.text = age!;
-    _phoneEditingController.text = phone!;
-    _emailEditingController.text = mail!;
-  }
 
   @override
   Widget build(BuildContext context) {
+    inputScreenController.setPickedImage('', false);
+    HomeScreenController controller = Get.put(HomeScreenController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Enter student details'),
@@ -96,7 +55,7 @@ class _InputPageState extends State<InputPage> {
               child: ListView(
                 children: [
                   GestureDetector(
-                    onTap: () => pickImage(),
+                    onTap: () async => await pickImage(),
                     child: CircleAvatar(
                       radius: 62,
                       backgroundColor: Colors.black54,
@@ -106,12 +65,15 @@ class _InputPageState extends State<InputPage> {
                         child: ClipOval(
                           child: SizedBox.fromSize(
                             size: const Size.fromRadius(60),
-                            child: (_image != null)
-                                ? Image.file(
-                                    _image!,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.asset('assets/images/user.png'),
+                            child: Obx(() {
+                              if (inputScreenController.isPicked.value) {
+                                File img =
+                                    File(inputScreenController.imagePath.value);
+                                return Image.file(img);
+                              } else {
+                                return Image.asset('assets/images/user.png');
+                              }
+                            }),
                           ),
                         ),
                       ),
@@ -151,15 +113,13 @@ class _InputPageState extends State<InputPage> {
                                     name: _nameController.text,
                                     phone: _phoneEditingController.text,
                                     mail: _emailEditingController.text,
-                                    id: DateTime.now()
-                                        .millisecondsSinceEpoch
-                                        .toString(),
-                                    imgPath: _image?.path ?? 'no-img');
-                                addStudent(student);
-
+                                    imgPath:
+                                        inputScreenController.imagePath.value);
+                                dataBaseFuctions.addStudent(student);
+                                controller.getAllStudentsDetails();
+                                clearPage();
                                 Get.back();
-                                getAllData();
-                                // clearPage();
+                                // dataBaseFuctions.getAllData();
                               }
                             },
                             child: const Text('Save Details')),

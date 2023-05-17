@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 
+// ignore: must_be_immutable
 class DetaildView extends StatelessWidget {
   final String name;
   final String age;
@@ -19,38 +22,52 @@ class DetaildView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 100,
-            ),
-            CircleAvatar(
-              radius: 60,
-              child: ClipOval(
-                child: SizedBox.fromSize(
-                  size: const Size.fromRadius(60),
-                  child: (image != null)
-                      ? Image.file(
-                          image!,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.asset('assets/images/user.png'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(50),
+            child: Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(Icons.arrow_back)),
+              ],
+            )),
+        body: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 100,
+              ),
+              CircleAvatar(
+                radius: 60,
+                child: ClipOval(
+                  child: SizedBox.fromSize(
+                    size: const Size.fromRadius(60),
+                    child: (image != null)
+                        ? Image.file(
+                            image!,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset('assets/images/user.png'),
+                  ),
                 ),
               ),
-            ),
-           const  SizedBox(
-              height: 10,
-            ),
-            Text(
-              name,
-              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-            ),
-            ShowAsRow(title: 'Age', value: age),
-            ShowAsRow(title: 'Phone', value: phone),
-            ShowAsRow(title: 'e-mail', value: email)
-          ],
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                name,
+                style:
+                    const TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+              ),
+              ShowAsRow(title: 'Age', value: age),
+              ShowAsRow(title: 'Phone', value: phone),
+              ShowAsRow(title: 'e-mail', value: email)
+            ],
+          ),
         ),
       ),
     );

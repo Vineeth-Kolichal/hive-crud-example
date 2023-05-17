@@ -3,12 +3,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:student_records/Widgets/input_field_widget.dart';
-import 'package:student_records/domain/studentModel.dart';
-import 'package:student_records/infrastructure/db_functions.dart';
+import 'package:student_records/domain/home_screen/models/student_model.dart';
+import 'package:student_records/presentation/home_screen/home_screen.dart';
 
 class InputBottonSheet extends StatefulWidget {
   StudentModel student;
@@ -143,12 +142,11 @@ class _InputBottonSheetState extends State<InputBottonSheet> {
                     onPressed: () {
                       StudentModel stu = StudentModel(
                           imgPath: _image?.path ?? student.imgPath,
-                          id: student.id,
                           age: _ageController.text,
                           name: _nameController.text,
                           mail: _emailEditingController.text,
                           phone: _phoneEditingController.text);
-                      updateStudent(stu);
+                      dataBaseFuctions.updateStudent(stu, student.key);
 
                       Get.back();
                     },

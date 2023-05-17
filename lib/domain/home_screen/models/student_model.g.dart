@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'studentModel.dart';
+part of 'student_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -21,7 +21,6 @@ class StudentModelAdapter extends TypeAdapter<StudentModel> {
       age: fields[1] as String,
       phone: fields[2] as String,
       mail: fields[3] as String,
-      id: fields[5] as String,
       imgPath: fields[4] as String?,
     );
   }
@@ -29,7 +28,7 @@ class StudentModelAdapter extends TypeAdapter<StudentModel> {
   @override
   void write(BinaryWriter writer, StudentModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -39,9 +38,7 @@ class StudentModelAdapter extends TypeAdapter<StudentModel> {
       ..writeByte(3)
       ..write(obj.mail)
       ..writeByte(4)
-      ..write(obj.imgPath)
-      ..writeByte(5)
-      ..write(obj.id);
+      ..write(obj.imgPath);
   }
 
   @override

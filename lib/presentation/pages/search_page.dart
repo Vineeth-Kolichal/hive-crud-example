@@ -1,13 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:student_records/domain/studentModel.dart';
-import 'package:student_records/presentation/homeScreen/home_screen.dart';
+import 'package:student_records/domain/home_screen/models/student_model.dart';
+import 'package:student_records/presentation/StudentDetials/detailed_view.dart';
+import 'package:student_records/presentation/home_screen/home_screen.dart';
 
-import '../StudentDetials/detailed_view.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -72,12 +71,11 @@ class _SearchPageState extends State<SearchPage> {
                           child: ListTile(
                             onTap: () {
                               Get.to(DetaildView(
-                                      name: stu.name,
-                                      age: stu.age,
-                                      phone: stu.phone,
-                                      email: stu.mail,
-                                      image: image));
-                             
+                                  name: stu.name,
+                                  age: stu.age,
+                                  phone: stu.phone,
+                                  email: stu.mail,
+                                  image: image));
                             },
                             title: Text(stu.name),
                             leading: CircleAvatar(
