@@ -6,7 +6,7 @@ import 'package:get/route_manager.dart';
 import 'package:student_records/application/home_screen/home_screen_controller.dart';
 import 'package:student_records/domain/home_screen/models/student_model.dart';
 import 'package:student_records/infrastructure/home_screen/home_screen_service_implementation.dart.dart';
-import 'package:student_records/presentation/pages/search_page.dart';
+// import 'package:student_records/presentation/pages/search_page.dart';
 import 'package:student_records/presentation/StudentDetials/detailed_view.dart';
 import 'package:student_records/presentation/input_form_screen/input_form_screen.dart';
 import 'package:student_records/Widgets/input_bottom_sheet.dart';
@@ -26,6 +26,49 @@ class HomeScreen extends StatelessWidget {
     });
 
     return Scaffold(
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Obx(
+            () => AppBar(
+              elevation: 0,
+              actions: [
+                studentListController.isSearching.value
+                    ? IconButton(
+                        onPressed: () {
+                          studentListController.searingFieldOpen(false);
+                          studentListController.search('');
+                        },
+                        icon: const Icon(Icons.close))
+                    : IconButton(
+                        onPressed: () async {
+                          studentListController.searingFieldOpen(true);
+                        },
+                        icon: const Icon(
+                          Icons.search,
+                        ),
+                      )
+              ],
+              title: studentListController.isSearching.value
+                  ? TextFormField(
+                      onChanged: (value) {
+                        studentListController.search(value);
+                      },
+                      cursorColor: const Color.fromARGB(255, 2, 110, 5),
+                      style: TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintStyle: TextStyle(color: Colors.white, fontSize: 17),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2, color: Colors.white)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 2, color: Colors.white)),
+                        hintText: 'Search here',
+                      ),
+                    )
+                  : Text('Student List'),
+            ),
+          )),
       backgroundColor: const Color.fromARGB(241, 243, 241, 241),
       body: SafeArea(
         child: Padding(
@@ -43,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                       StudentModel stu =
                           studentListController.studentList[index];
                       File? image;
-                      if (stu.imgPath != 'no-img') {
+                      if (stu.imgPath != '') {
                         image = File(stu.imgPath!);
                       }
                       return Card(
@@ -51,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(30)),
                         child: ListTile(
                           onTap: () {
-                            Get.to(
+                            Get.to(() =>
                                 DetaildView(
                                     name: stu.name,
                                     age: stu.age,
@@ -120,22 +163,9 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(InputPage());
+          Get.to(() =>InputPage());
         },
         child: const Icon(Icons.add),
-      ),
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () async {
-              Get.to(const SearchPage(), transition: Transition.cupertino);
-            },
-            icon: const Icon(
-              Icons.search,
-            ),
-          ),
-        ],
-        title: const Text('Student List'),
       ),
     );
   }

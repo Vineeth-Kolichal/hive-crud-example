@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:student_records/domain/home_screen/models/student_model.dart';
-import 'package:student_records/domain/home_screen_services.dart';
+import 'package:student_records/domain/home_screen/home_screen_services.dart';
 import 'package:student_records/presentation/home_screen/home_screen.dart';
 
 class HomeScreenServicesImplementation extends HomeScreenServices {
@@ -10,18 +12,16 @@ class HomeScreenServicesImplementation extends HomeScreenServices {
     return dataBaseFuctions;
   }
   List<StudentModel> studenList = [];
-  @override
-  Future<void> addStudent(StudentModel student) async {
-    final stuDB = await Hive.openBox<StudentModel>('student_db');
-    await stuDB.add(student);
-    studentListController.getAllStudentsDetails();
-  }
 
   @override
-  Future<List<StudentModel>> getAllData() async {
+  Future<List<StudentModel>> getAllData(String query) async {
     final stuDB = await Hive.openBox<StudentModel>('student_db');
     List<StudentModel> students = [];
-    students.addAll(stuDB.values);
+    log(query);
+    students.addAll(stuDB.values
+        .where((element) =>
+            element.name.toLowerCase().contains(query.toLowerCase().trim()))
+        .toList());
     return students;
   }
 
@@ -39,7 +39,7 @@ class HomeScreenServicesImplementation extends HomeScreenServices {
     studentListController.getAllStudentsDetails();
   }
 
-  Future<List<StudentModel>> getSearch() async {
+  Future<List<StudentModel>> SearchStudent() async {
     final stuDB = await Hive.openBox<StudentModel>('student_db');
     List<StudentModel> studentList = [];
     studentList.addAll(stuDB.values);

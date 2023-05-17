@@ -7,7 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:student_records/Widgets/input_field_widget.dart';
 import 'package:student_records/application/home_screen/home_screen_controller.dart';
 import 'package:student_records/application/input_form_screen/input_form_screen_controllers.dart';
-import 'package:student_records/domain/home_screen/models/student_model.dart';import 'package:student_records/presentation/home_screen/home_screen.dart';
+import 'package:student_records/domain/home_screen/models/student_model.dart';
+import 'package:student_records/infrastructure/input_form_screen/input_screen_service_implementation.dart';
 
 InputFormScreenController inputScreenController =
     Get.put(InputFormScreenController());
@@ -39,6 +40,8 @@ class InputPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    InputFormSecreenServiceImplementation input =
+        InputFormSecreenServiceImplementation();
     inputScreenController.setPickedImage('', false);
     HomeScreenController controller = Get.put(HomeScreenController());
     return Scaffold(
@@ -104,25 +107,26 @@ class InputPage extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                            style: const ButtonStyle(),
-                            onPressed: () {
-                              if (formkey.currentState!.validate()) {
-                                formkey.currentState!.save();
-                                StudentModel student = StudentModel(
-                                    age: _ageController.text,
-                                    name: _nameController.text,
-                                    phone: _phoneEditingController.text,
-                                    mail: _emailEditingController.text,
-                                    imgPath:
-                                        inputScreenController.imagePath.value);
-                                dataBaseFuctions.addStudent(student);
-                                controller.getAllStudentsDetails();
-                                clearPage();
-                                Get.back();
-                                // dataBaseFuctions.getAllData();
-                              }
-                            },
-                            child: const Text('Save Details')),
+                          style: const ButtonStyle(),
+                          onPressed: () {
+                            if (formkey.currentState!.validate()) {
+                              formkey.currentState!.save();
+                              StudentModel student = StudentModel(
+                                  age: _ageController.text,
+                                  name: _nameController.text,
+                                  phone: _phoneEditingController.text,
+                                  mail: _emailEditingController.text,
+                                  imgPath:
+                                      inputScreenController.imagePath.value);
+                              input.addStudent(student);
+                              controller.getAllStudentsDetails();
+                              clearPage();
+                              Get.back();
+                              // dataBaseFuctions.getAllData();
+                            }
+                          },
+                          child: const Text('Save Details'),
+                        ),
                       ),
                     ],
                   )
