@@ -6,10 +6,9 @@ import 'package:get/route_manager.dart';
 import 'package:student_records/application/home_screen/home_screen_controller.dart';
 import 'package:student_records/domain/home_screen/models/student_model.dart';
 import 'package:student_records/infrastructure/home_screen/home_screen_service_implementation.dart.dart';
-// import 'package:student_records/presentation/pages/search_page.dart';
 import 'package:student_records/presentation/StudentDetials/detailed_view.dart';
 import 'package:student_records/presentation/input_form_screen/input_form_screen.dart';
-import 'package:student_records/Widgets/input_bottom_sheet.dart';
+import 'package:student_records/presentation/Widgets/input_bottom_sheet.dart';
 
 HomeScreenServicesImplementation dataBaseFuctions =
     HomeScreenServicesImplementation();
@@ -35,13 +34,13 @@ class HomeScreen extends StatelessWidget {
                 studentListController.isSearching.value
                     ? IconButton(
                         onPressed: () {
-                          studentListController.searingFieldOpen(false);
+                          studentListController.searchingFieldOpen(false);
                           studentListController.search('');
                         },
                         icon: const Icon(Icons.close))
                     : IconButton(
                         onPressed: () async {
-                          studentListController.searingFieldOpen(true);
+                          studentListController.searchingFieldOpen(true);
                         },
                         icon: const Icon(
                           Icons.search,
@@ -54,8 +53,8 @@ class HomeScreen extends StatelessWidget {
                         studentListController.search(value);
                       },
                       cursorColor: const Color.fromARGB(255, 2, 110, 5),
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
                         hintStyle: TextStyle(color: Colors.white, fontSize: 17),
                         focusedBorder: UnderlineInputBorder(
                             borderSide:
@@ -66,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                         hintText: 'Search here',
                       ),
                     )
-                  : Text('Student List'),
+                  : const Text('Student List'),
             ),
           )),
       backgroundColor: const Color.fromARGB(241, 243, 241, 241),
@@ -78,7 +77,7 @@ class HomeScreen extends StatelessWidget {
                 Expanded(child: Obx(() {
                   if (studentListController.studentList.isEmpty) {
                     return const Center(
-                      child: Text('Student list is empty'),
+                      child: Text('No students found 🧐'),
                     );
                   }
                   return ListView.separated(
@@ -94,8 +93,8 @@ class HomeScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(30)),
                         child: ListTile(
                           onTap: () {
-                            Get.to(() =>
-                                DetaildView(
+                            Get.to(
+                                () => DetaildView(
                                     name: stu.name,
                                     age: stu.age,
                                     phone: stu.phone,
@@ -163,7 +162,7 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.to(() =>InputPage());
+          Get.to(() => InputPage());
         },
         child: const Icon(Icons.add),
       ),

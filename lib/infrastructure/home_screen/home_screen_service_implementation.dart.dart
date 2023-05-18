@@ -38,13 +38,5 @@ class HomeScreenServicesImplementation extends HomeScreenServices {
     await stuDB.put(key, student);
     studentListController.getAllStudentsDetails();
   }
-
-  Future<List<StudentModel>> SearchStudent() async {
-    final stuDB = await Hive.openBox<StudentModel>('student_db');
-    List<StudentModel> studentList = [];
-    studentList.addAll(stuDB.values);
-    return studentList;
-  }
-
   HomeScreenServicesImplementation._internal();
 }

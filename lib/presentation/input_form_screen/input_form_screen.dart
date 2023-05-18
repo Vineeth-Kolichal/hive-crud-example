@@ -4,7 +4,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:student_records/Widgets/input_field_widget.dart';
+import 'package:student_records/presentation/Widgets/input_field_widget.dart';
 import 'package:student_records/application/home_screen/home_screen_controller.dart';
 import 'package:student_records/application/input_form_screen/input_form_screen_controllers.dart';
 import 'package:student_records/domain/home_screen/models/student_model.dart';
@@ -121,6 +121,7 @@ class InputPage extends StatelessWidget {
                               input.addStudent(student);
                               controller.getAllStudentsDetails();
                               clearPage();
+                              
                               Get.back();
                               // dataBaseFuctions.getAllData();
                             }
