@@ -1,9 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
-import 'package:student_records/application/home_screen/home_screen_controller.dart';
 import 'package:student_records/domain/home_screen/models/student_model.dart';
 import 'package:student_records/infrastructure/home_screen/home_screen_service_implementation.dart.dart';
 import 'package:student_records/presentation/StudentDetials/detailed_view.dart';
@@ -93,14 +89,13 @@ class HomeScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(30)),
                         child: ListTile(
                           onTap: () {
-                            Get.to(
-                                () => DetaildView(
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: ((ctx) => DetaildView(
                                     name: stu.name,
                                     age: stu.age,
                                     phone: stu.phone,
                                     email: stu.mail,
-                                    image: image),
-                                transition: Transition.cupertino);
+                                    image: image))));
                           },
                           title: Text(stu.name),
                           leading: CircleAvatar(

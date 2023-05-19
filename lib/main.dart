@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:student_records/domain/home_screen/models/student_model.dart';
 import 'package:student_records/presentation/home_screen/home_screen.dart';
@@ -18,7 +17,7 @@ class StudentRecord extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.teal),
       home: HomeScreen(),
