@@ -1,20 +1,25 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:student_records/application/home_screen/home_screen_bloc.dart';
+import 'package:student_records/application/input_screen/input_screen_bloc.dart';
 import 'package:student_records/presentation/Widgets/input_field_widget.dart';
 import 'package:student_records/domain/home_screen/models/student_model.dart';
 import 'package:student_records/infrastructure/input_form_screen/input_screen_service_implementation.dart';
 
-
+// ignore: must_be_immutable
 class InputPage extends StatelessWidget {
   InputPage({super.key});
 
   final formkey = GlobalKey<FormState>();
-
-  Future<void> pickImage() async {
+  File? image;
+  Future<void> pickImage(BuildContext context) async {
     final imagePicked =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (imagePicked != null) {
+      image = File(imagePicked.path);
+      context.read<InputScreenBloc>().add(ImagePicked());
     }
   }
 
@@ -34,8 +39,6 @@ class InputPage extends StatelessWidget {
   Widget build(BuildContext context) {
     InputFormSecreenServiceImplementation input =
         InputFormSecreenServiceImplementation();
-    inputScreenController.setPickedImage('', false);
-    HomeScreenController controller = Get.put(HomeScreenController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Enter student details'),
@@ -50,7 +53,7 @@ class InputPage extends StatelessWidget {
               child: ListView(
                 children: [
                   GestureDetector(
-                    onTap: () async => await pickImage(),
+                    onTap: () async => await pickImage(context),
                     child: CircleAvatar(
                       radius: 62,
                       backgroundColor: Colors.black54,
@@ -60,15 +63,16 @@ class InputPage extends StatelessWidget {
                         child: ClipOval(
                           child: SizedBox.fromSize(
                             size: const Size.fromRadius(60),
-                            child: Obx(() {
-                              if (inputScreenController.isPicked.value) {
-                                File img =
-                                    File(inputScreenController.imagePath.value);
-                                return Image.file(img);
-                              } else {
-                                return Image.asset('assets/images/user.png');
-                              }
-                            }),
+                            child:
+                                BlocBuilder<InputScreenBloc, InputScreenState>(
+                              builder: (context, state) {
+                                if (state.isImageSelected) {
+                                  return Image.file(image!);
+                                } else {
+                                  return Image.asset('assets/images/user.png');
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -108,12 +112,12 @@ class InputPage extends StatelessWidget {
                                   name: _nameController.text,
                                   phone: _phoneEditingController.text,
                                   mail: _emailEditingController.text,
-                                  imgPath:
-                                      inputScreenController.imagePath.value);
+                                  imgPath: image != null ? image?.path : '');
                               input.addStudent(student);
-                              controller.getAllStudentsDetails();
                               clearPage();
-                              
+                              context
+                                  .read<HomeScreenBloc>()
+                                  .add(GetAllStudents());
                               Navigator.of(context).pop();
                               // dataBaseFuctions.getAllData();
                             }

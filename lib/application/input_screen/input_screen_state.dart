@@ -1,6 +1,10 @@
 part of 'input_screen_bloc.dart';
 
-@immutable
-abstract class InputScreenState {}
+class InputScreenState {
+  final bool isImageSelected;
+  InputScreenState({ required this.isImageSelected});
+}
 
-class InputScreenInitial extends InputScreenState {}
+class InputScreenInitial extends InputScreenState {
+  InputScreenInitial() : super( isImageSelected: false);
+}

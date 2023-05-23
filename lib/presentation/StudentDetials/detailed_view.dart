@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
+
 
 // ignore: must_be_immutable
 class DetaildView extends StatelessWidget {
@@ -30,7 +29,7 @@ class DetaildView extends StatelessWidget {
               children: [
                 IconButton(
                     onPressed: () {
-                      Get.back();
+                      Navigator.of(context).pop();
                     },
                     icon: const Icon(Icons.arrow_back)),
               ],

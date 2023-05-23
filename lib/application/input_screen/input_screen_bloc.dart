@@ -6,8 +6,9 @@ part 'input_screen_state.dart';
 
 class InputScreenBloc extends Bloc<InputScreenEvent, InputScreenState> {
   InputScreenBloc() : super(InputScreenInitial()) {
-    on<InputScreenEvent>((event, emit) {
-      // TODO: implement event handler
+    on<ImagePicked>((event, emit) {
+      final newState = InputScreenState(isImageSelected: true);
+      emit(newState);
     });
   }
 }
